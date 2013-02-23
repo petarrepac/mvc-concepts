@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Routing001.Tests
 {
-    public static class TestHelpers
+    public static class TestHelper
     {
 
         public static HttpContextBase CreateHttpContext(string targetUrl = null, string httpMethod = "GET")
