@@ -29,5 +29,58 @@ namespace Routing001.Tests
             TestHelper.TestRouteFail(configAction, "~/Admin");
             TestHelper.TestRouteFail(configAction, "~/");
         }
+
+        [Test]
+        public void DefaultValueForActionSegmentVariable()
+        {
+            Action<RouteCollection> configAction = routes =>
+            {
+                routes.MapRoute(null, "{controller}/{action}", new { action = "Index" });
+            };
+
+            TestHelper.TestRouteMatch(configAction, "~/Admin/Index", "Admin", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Admin", "Admin", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Article/List", "Article", "List");
+
+            TestHelper.TestRouteFail(configAction, "~/Admin/Index/Segment");
+            TestHelper.TestRouteFail(configAction, "~/");
+        }
+
+        [Test]
+        public void DefaultValueForActionAndControllerSegmentVariables()
+        {
+            Action<RouteCollection> configAction = routes =>
+            {
+                routes.MapRoute(null, "{controller}/{action}", new { controller = "Home", action = "Index" });
+            };
+
+            TestHelper.TestRouteMatch(configAction, "~/Article/List", "Article", "List");
+            TestHelper.TestRouteMatch(configAction, "~/Article", "Article", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/", "Home", "Index");
+
+            TestHelper.TestRouteFail(configAction, "~/Home/Index/Segment");
+        }
+
+        [Test]
+        public void StaticSegments()
+        {
+            Action<RouteCollection> configAction = routes =>
+            {
+                routes.MapRoute(null, "X{controller}/{action}");
+                routes.MapRoute(null, "{controller}/{action}", new { controller = "Home", action = "Index" });
+                routes.MapRoute(null, "Public/{controller}/{action}", new { controller = "Home", action = "Index" });
+            };
+
+            TestHelper.TestRouteMatch(configAction, "~/XArticle/List", "Article", "List");
+            TestHelper.TestRouteMatch(configAction, "~/XArticle", "XArticle", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Article", "Article", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/", "Home", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Public", "Public", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Public/Action", "Public", "Action");
+            TestHelper.TestRouteMatch(configAction, "~/Public/Article/List", "Article", "List");
+
+            TestHelper.TestRouteFail(configAction, "~/NotPublic/Index/Segment");
+            TestHelper.TestRouteFail(configAction, "~/Public/S1/S1/S3");
+        }
     }
 }
