@@ -10,7 +10,7 @@ namespace Routing001.Tests
     public static class TestHelper
     {
 
-        public static HttpContextBase CreateHttpContext(string targetUrl = null, string httpMethod = "GET")
+        public static HttpContextBase CreateHttpContext(string targetUrl, string httpMethod)
         {
             // create the mock request
             var mockRequest = new Mock<HttpRequestBase>();
@@ -74,14 +74,14 @@ namespace Routing001.Tests
             Assert.IsTrue(TestIncomingRouteResult(result, controller, action, routeProperties));
         }
 
-        public static void TestRouteFail(Action<RouteCollection> registerRouteAction, string url)
+        public static void TestRouteFail(Action<RouteCollection> registerRouteAction, string url, string httpMethod = "GET")
         {
             // Arrange
             var routes = new RouteCollection();
             registerRouteAction(routes);
 
             // Act - process the route
-            RouteData result = routes.GetRouteData(CreateHttpContext(url));
+            RouteData result = routes.GetRouteData(CreateHttpContext(url, httpMethod));
 
             // Assert
             Assert.IsTrue(result == null || result.Route == null);

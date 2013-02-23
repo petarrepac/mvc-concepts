@@ -10,7 +10,7 @@ namespace Routing001.Tests
     {
 
         [Test]
-        public void Test1()
+        public void RoutingIsConservative()
         {
             Action<RouteCollection> configAction = routes =>
                 {
@@ -131,6 +131,37 @@ namespace Routing001.Tests
             TestHelper.TestRouteMatch(configAction, "~/Article/Detail/42", "Article", "Detail", new { id = "42" });
             TestHelper.TestRouteMatch(configAction, "~/S1/S2/S3/S4", "S1", "S2", new { id = "S3", catchall = "S4" });
             TestHelper.TestRouteMatch(configAction, "~/S1/S2/S3/S4/S5", "S1", "S2", new { id = "S3", catchall = "S4/S5" });
+        }
+
+        [Test]
+        public void RegularExpressionsConstraints()
+        {
+            Action<RouteCollection> configAction = routes =>
+                    routes.MapRoute(null, "{controller}/{action}/{id}/{*catchall}",
+                    new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                    new { controller = "^H.*" });
+
+
+            TestHelper.TestRouteMatch(configAction, "~/", "Home", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Homer", "Homer", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Homer/Simpson", "Homer", "Simpson");
+            TestHelper.TestRouteFail(configAction, "~/Article");
+            TestHelper.TestRouteFail(configAction, "~/Article/List");
+        }
+
+        [Test]
+        public void ConstrainingByHttpMethod()
+        {
+            Action<RouteCollection> configAction = routes =>
+                routes.MapRoute("MyRoute", "{controller}/{action}/{id}/{*catchall}",
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new { controller = "^H.*", action = "Index|About", 
+                    httpMethod = new HttpMethodConstraint("GET")},
+                new[] { "URLsAndRoutes.Controllers" });
+
+            TestHelper.TestRouteMatch(configAction, "~/", "Home", "Index", new {}, httpMethod: "GET");
+
+            TestHelper.TestRouteFail(configAction, "~/", httpMethod: "POST");
         }
 
     }
