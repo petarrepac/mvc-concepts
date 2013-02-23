@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using NUnit.Framework;
+using Routing001.Infrastructure;
 
 namespace Routing001.Tests
 {
@@ -153,7 +154,7 @@ namespace Routing001.Tests
         public void ConstrainingByHttpMethod()
         {
             Action<RouteCollection> configAction = routes =>
-                routes.MapRoute("MyRoute", "{controller}/{action}/{id}/{*catchall}",
+                routes.MapRoute(null, "{controller}/{action}/{id}/{*catchall}",
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new { controller = "^H.*", action = "Index|About", 
                     httpMethod = new HttpMethodConstraint("GET", "DELETE")},
@@ -163,6 +164,18 @@ namespace Routing001.Tests
 
             TestHelper.TestRouteFail(configAction, "~/", httpMethod: "POST");
         }
+
+        [Test]
+        public void CustomRouteConstraint()
+        {
+            Action<RouteCollection> configAction = routes =>
+                routes.MapRoute(null, "{controller}/{action}/{id}/{*catchall}",
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new { controller = "^H.*", action = "Index|About", httpMethod = new HttpMethodConstraint("GET", "POST"),
+                    customConstraint = new UserAgentConstraint("IE") });
+        }
+
+
 
     }
 }
