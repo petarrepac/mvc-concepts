@@ -27,6 +27,7 @@ namespace Routing001.Tests
             // ensure that too many or too few segments fails to match
             TestHelper.TestRouteFail(configAction, "~/Admin/Index/Segment");
             TestHelper.TestRouteFail(configAction, "~/Admin");
+            TestHelper.TestRouteFail(configAction, "~/");
         }
     }
 }
