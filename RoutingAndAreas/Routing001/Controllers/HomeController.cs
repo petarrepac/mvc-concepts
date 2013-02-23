@@ -28,5 +28,11 @@ namespace Routing001.Controllers
 
             return View();
         }
+
+        public ActionResult ShowOutRoutes()
+        {
+            return View();
+        }
+
     }
 }

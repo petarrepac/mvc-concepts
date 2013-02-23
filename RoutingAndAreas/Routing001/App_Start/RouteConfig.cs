@@ -9,7 +9,8 @@ namespace Routing001
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("NameOfARoute", "{controller}/{action}");
+            routes.MapRoute(null, "{controller}/{action}/{id}", 
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional });
 
             //var myRoute = new Route("{controller}/{action}", new MvcRouteHandler());
             //routes.Add("SomeRoute", myRoute);
