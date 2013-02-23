@@ -104,10 +104,9 @@ namespace Routing001.Tests
         [Test]
         public void OptionalSegmentVariables()
         {
-            Action<RouteCollection> configAction = routes =>
-            {
-                routes.MapRoute(null, "{controller}/{action}/{id}", new { controller = "Home", action = "Index", id = UrlParameter.Optional });
-            };
+            Action<RouteCollection> configAction = routes => 
+                routes.MapRoute(null, "{controller}/{action}/{id}", 
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional });
 
 
             TestHelper.TestRouteMatch(configAction, "~/", "Home", "Index");
@@ -117,6 +116,22 @@ namespace Routing001.Tests
 
             TestHelper.TestRouteFail(configAction, "~/S1/S2/S3/S4");
         }
-    
+
+        [Test]
+        public void VariableLengthsRoutes()
+        {
+            Action<RouteCollection> configAction = routes =>
+                    routes.MapRoute(null, "{controller}/{action}/{id}/{*catchall}", 
+                    new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+
+
+            TestHelper.TestRouteMatch(configAction, "~/", "Home", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Article", "Article", "Index");
+            TestHelper.TestRouteMatch(configAction, "~/Article/Detail", "Article", "Detail");
+            TestHelper.TestRouteMatch(configAction, "~/Article/Detail/42", "Article", "Detail", new { id = "42" });
+            TestHelper.TestRouteMatch(configAction, "~/S1/S2/S3/S4", "S1", "S2", new { id = "S3", catchall = "S4" });
+            TestHelper.TestRouteMatch(configAction, "~/S1/S2/S3/S4/S5", "S1", "S2", new { id = "S3", catchall = "S4/S5" });
+        }
+
     }
 }
