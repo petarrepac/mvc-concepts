@@ -58,11 +58,13 @@ namespace Routing001.Tests
             return true;
         }
 
-        public static void TestRouteMatch(string url, string controller, string action, object routeProperties = null, string httpMethod = "GET")
+        public static void TestRouteMatch(Action<RouteCollection> registerRouteAction, 
+            string url, string controller, string action, 
+            object routeProperties = null, string httpMethod = "GET")
         {
             // Arrange
             var routes = new RouteCollection();
-            RouteConfig.RegisterRoutes(routes);
+            registerRouteAction(routes);
 
             // Act - process the route
             RouteData result = routes.GetRouteData(CreateHttpContext(url, httpMethod));
@@ -72,11 +74,11 @@ namespace Routing001.Tests
             Assert.IsTrue(TestIncomingRouteResult(result, controller, action, routeProperties));
         }
 
-        public static void TestRouteFail(string url)
+        public static void TestRouteFail(Action<RouteCollection> registerRouteAction, string url)
         {
             // Arrange
             var routes = new RouteCollection();
-            RouteConfig.RegisterRoutes(routes);
+            registerRouteAction(routes);
 
             // Act - process the route
             RouteData result = routes.GetRouteData(CreateHttpContext(url));
