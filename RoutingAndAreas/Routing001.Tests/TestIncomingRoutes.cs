@@ -82,5 +82,23 @@ namespace Routing001.Tests
             TestHelper.TestRouteFail(configAction, "~/NotPublic/Index/Segment");
             TestHelper.TestRouteFail(configAction, "~/Public/S1/S1/S3");
         }
+
+        [Test]
+        public void CustomSegmentVariables()
+        {
+            Action<RouteCollection> configAction = routes =>
+            {
+                routes.MapRoute(null, "{controller}/{action}/{id}", 
+                    new { controller = "Home", action = "Index", id = "DefaultId" });
+            };
+
+
+            TestHelper.TestRouteMatch(configAction, "~/", "Home", "Index", new {id = "DefaultId"});
+            TestHelper.TestRouteMatch(configAction, "~/Article", "Article", "Index", new { id = "DefaultId" });
+            TestHelper.TestRouteMatch(configAction, "~/Article/Detail", "Article", "Detail", new { id = "DefaultId" });
+            TestHelper.TestRouteMatch(configAction, "~/Article/Detail/42", "Article", "Detail", new { id = "42" });
+
+            TestHelper.TestRouteFail(configAction, "~/S1/S2/S3/S4");
+        }
     }
 }
