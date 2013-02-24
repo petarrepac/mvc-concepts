@@ -10,6 +10,8 @@ namespace Routing001
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.Add(new Route("SayHello", new CustomRouteHandler()));
+
             routes.Add(new LegacyRoute(
                 "~/some/oldRoute/to/test",
                 "~/old/replaceThisOldRoute"));
