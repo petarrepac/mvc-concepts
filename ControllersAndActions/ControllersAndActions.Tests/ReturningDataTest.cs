@@ -5,14 +5,14 @@ using NUnit.Framework;
 namespace ControllersAndActions.Tests
 {
     [TestFixture]
-    public class ReturningTextDataTest
+    public class ReturningDataTest
     {
 
         [Test]
         public void ContentTest()
         {
             // Arrange - create the controller
-            var target = new ReturningTextDataController();
+            var target = new ReturningDataController();
 
             // Act - call the action method
             ContentResult result = target.Index();

@@ -6,7 +6,7 @@ using ControllersAndActions.Models;
 
 namespace ControllersAndActions.Controllers
 {
-    public class ReturningTextDataController : Controller
+    public class ReturningDataController : Controller
     {
         public ContentResult Index()
         {
