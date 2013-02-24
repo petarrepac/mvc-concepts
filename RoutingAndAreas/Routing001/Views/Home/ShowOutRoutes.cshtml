@@ -3,5 +3,19 @@
 }
 
 <h2>ShowOutRoutes</h2>
+<ul>
+    <li>@Html.ActionLink("Go to Home/About", "About")</li>
+    <li>@Html.ActionLink("Go to My/About", "About", "My")</li>
+    <li>@Html.ActionLink("Go to Home/About/MyID", "About", new {id = "MyID"})</li>
+    <li>@Html.ActionLink("Go to Home/About/MyID?myVar=mvValue", "About", new {id = "MyID", myVar="myValue"})</li>
+    <li>@Html.ActionLink("Go to /", "Index", "Home")</li>
+    <li>@Html.ActionLink("Go to /", "Index", "Home", null, new {id = "htmlId", @class="cssClass"})</li>
+    <li>URL: @Url.Action("Index", "Home", new { id = "MyId" })</li>
+    <li>@Html.RouteLink("Routed Link: /Home/About/MyID", new { controller = "Home", action = "About", id="MyID"})</li>
+    <li>Url.RouteUrl: @Url.RouteUrl(new { controller = "Home", action = "About", id="MyID"})</li>
+    <li><a href="~/old/replaceThisOldRoute">~/old/replaceThisOldRoute</a></li>
+    
+    
 
-@Html.ActionLink("About this application", "About")
+
+</ul>
