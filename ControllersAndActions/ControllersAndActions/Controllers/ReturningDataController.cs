@@ -2,6 +2,7 @@
 using System.Text;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using ControllersAndActions.Infrastructure;
 using ControllersAndActions.Models;
 
 namespace ControllersAndActions.Controllers
@@ -35,6 +36,26 @@ namespace ControllersAndActions.Controllers
         {
             Movie[] movies = Movie.GetMovies();
             return Json(movies);
+        }
+
+        public FileResult AnnualReport()
+        {
+            string filename = @"c:\AnnualReport.pdf";
+            string contentType = "application/pdf";
+            string downloadName = "AnnualReport2011.pdf";
+
+            return File(filename, contentType, downloadName);
+        }
+
+        public RssActionResult RSS()
+        {
+            Movie[] movies = Movie.GetMovies();
+
+            return new RssActionResult<Movie>("My movies", movies, 
+                e => new XElement("item",
+                    new XAttribute("title", e.Title),
+                    new XAttribute("description", e.Description),
+                    new XAttribute("directorName", e.DirectorName)));
         }
     }
 }
