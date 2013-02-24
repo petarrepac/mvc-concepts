@@ -16,6 +16,11 @@ namespace ControllersAndActions.Controllers
             return new RedirectResult("~/Derived/Index");
         }
 
+        public ActionResult Redirect2()
+        {
+            return Redirect("/Derived/Index");
+        }
+
         public ActionResult GetDataFromConvenienceProperties()
         {
             string userName = User.Identity.Name;
