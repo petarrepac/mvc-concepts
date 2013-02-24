@@ -12,6 +12,9 @@ namespace ControllersAndActions.Controllers
 
             requestContext.HttpContext.Response
                 .Write(string.Format("Controller: {0}, Action: {1}", controller, action));
+
+            // ... or ...
+            // requestContext.HttpContext.Response.Redirect("/Some/Other/Url");
         }
     }
 }

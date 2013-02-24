@@ -25,10 +25,32 @@ namespace ControllersAndActions.Controllers
         {
             string userName = User.Identity.Name;
             string serverName = Server.MachineName;
-            string clientIP = Request.UserHostAddress;
+
+            string clientIp = Request.UserHostAddress;
+            string oldId = Request.Form["oldId"];
+            string newId = Request.Form["newId"];
+
             DateTime dateStamp = HttpContext.Timestamp;
 
+            // Retrieve posted data from Request.Form
+
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Search(string query = "all", int page = 1)
+        {
+            // ...
+            return null;
+        }
+
+        public void Index2()
+        {
+            string controller = (string)RouteData.Values["controller"];
+            string action = (string)RouteData.Values["action"];
+
+            Response.Write(string.Format("Controller: {0}, Action: {1}", controller, action));
+            // ... or ...
+            // Response.Redirect("/Some/Other/Url");
         }
     }
 }
